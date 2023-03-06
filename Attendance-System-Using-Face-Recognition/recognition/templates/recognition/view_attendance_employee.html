@@ -9,8 +9,10 @@
 	  <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../static/recognition/img/css/emp.css">
+    <link rel="stylesheet" href="../../static/recognition/img/css/view_attendance_home.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
@@ -18,7 +20,7 @@
 </head>
  <body>
 
- 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+ 	<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{%url 'view-attendance-home' %}">Attendance Dashboard</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -41,7 +43,24 @@
   
     </ul>
   </div>
+</nav> -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="ggs">
+  <a class="navbar-brand" href="{%url 'view-attendance-home' %}">Attendance Report</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link active" href="{%url 'view-attendance-employee' %}" style="color:rgb(224, 173, 3) !important;">By Employee</span></a>
+      <a class="nav-link active" href="{% url 'view-attendance-date' %}">By Date</a>
+
+  
+    </div>
+  </div>
+  <a class="navbar-brand" href="{% url 'dashboard' %}">Admin Dashboard</a>
 </nav>
+
 
 
 <div class="container">
