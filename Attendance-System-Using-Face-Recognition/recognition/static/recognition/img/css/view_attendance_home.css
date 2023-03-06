@@ -1,0 +1,13 @@
+#ggs{
+    background-color: rgb(146, 182, 137) !important;
+}
+
+#navbarNav{
+    
+    display: flex;
+}
+
+#navbarNav ul li{
+
+    width: 100%;
+}
