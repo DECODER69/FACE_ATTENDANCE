@@ -1,0 +1,10 @@
+.row{
+    background-color: rgb(29, 108, 177) !important;
+    width: 100%;
+    display: flex;
+}
+.row #lo{
+    background-color: black;
+    margin: auto;
+    width: 100%;
+}

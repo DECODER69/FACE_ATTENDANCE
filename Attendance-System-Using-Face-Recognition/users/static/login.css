@@ -1,0 +1,31 @@
+.collapse{
+   
+    display: block !important;
+    text-align: center !important;
+}
+
+.collapse .sw{
+    width: 100%;
+    height: auto;
+    display: block !important;
+   
+}
+.sw h2{
+    font-size: 35px !important;
+    font-weight: bolder;
+}
+
+.navbar{
+    background-color: rgb(218, 218, 218) !important;
+}
+
+#upper{
+
+    margin-top: 0 !important;
+}
+
+.inl{
+    background-color: brown;
+    width: 100%;
+    height: 50vh;
+}
