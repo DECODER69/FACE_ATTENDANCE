@@ -2,3 +2,51 @@
    
     margin-top: 10px;
 }
+#container{
+    width: 100%;
+    height: auto;
+}
+#forme{
+    justify-content:left !important;
+    padding: 10px;
+    background-color: rgb(255, 255, 255) !important;
+    margin: auto;
+    display:block;
+    width: 70%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+form{
+    display: block;
+}
+
+#set{
+    width: 100% !important;
+  
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.username{
+    background-color: rgb(255, 255, 255) !important;
+    min-width: 100% !important;
+}
+
+.date_from{
+    min-width: 100% !important;
+    line-height: 100px !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+.date_to{
+    min-width: 100% !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+#table12{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.card{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

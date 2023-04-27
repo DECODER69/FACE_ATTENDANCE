@@ -13,9 +13,21 @@ class DateForm(forms.Form):
 
 
 class UsernameAndDateForm(forms.Form):
-	username=forms.CharField(max_length=30)
+	username = forms.ModelChoiceField(queryset=User.objects.all())
+
+	# my_field = forms.CharField(widget=forms.TextInput(attrs={'class': 'my-class'}))
+	# username=forms.CharField(max_length=30)
 	date_from=forms.DateField(widget = forms.SelectDateWidget(empty_label=("Choose Year", "Choose Month", "Choose Day")))
+
+
 	date_to=forms.DateField(widget = forms.SelectDateWidget(empty_label=("Choose Year", "Choose Month", "Choose Day")))
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['date_to'].widget.attrs['class'] = 'date_to'
+		self.fields['username'].widget.attrs['class'] = 'username'
+		self.fields['date_from'].widget.attrs['class'] = 'date_from'
+
 
 
 class DateForm_2(forms.Form):
@@ -23,3 +35,4 @@ class DateForm_2(forms.Form):
 	date_to=forms.DateField(widget = forms.SelectDateWidget(empty_label=("Choose Year", "Choose Month", "Choose Day")))
 
        
+

@@ -67,8 +67,8 @@
 
 
 <div class="container">
-  <div style="width: 400px">
- <form method="POST" >
+  <div >
+ <form method="POST" id="forme">
       {% csrf_token %}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4"> Select Date </legend>
@@ -84,7 +84,7 @@
 </div>
 {% if qs %}
 
-<table  class="table" style="margin-top: 5em; ">
+<table  class="table table-hover" style="margin-top: 5em; " id="table12">
     <thead class="thead-dark">
     <tr>
         <th scope="col">Date</th>

@@ -1,0 +1,75 @@
+.w{
+    display: flex;
+padding: 70px;
+    justify-content: space-between;
+
+
+ 
+}
+
+
+.w .wew{
+    display: block;
+    text-align: center;
+}
+
+
+#upper{
+
+    margin-top: 0 !important;
+}
+
+body{
+    background-color: black ;
+}
+
+.collapse{
+   
+    display: block !important;
+    text-align: center !important;
+}
+
+.collapse .sw{
+    width: 100%;
+    height: auto;
+    display: block !important;
+   
+}
+.sw h2{
+    font-size: 35px !important;
+    font-weight: bolder;
+}
+
+.navbar{
+    background-color: rgb(218, 218, 218) !important;
+}
+
+.in{
+    font-weight: bolder;
+    font-size: 30px ;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: rgb(148, 248, 170);
+    width: 30%;
+    height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.out{
+    font-weight: bolder;
+    font-size: 30px ;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: rgb(255, 158, 134);
+    width: 30%;
+    height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+
+.forme{
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    width: 50%;
+    margin: auto;
+}

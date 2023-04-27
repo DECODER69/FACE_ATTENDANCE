@@ -5,19 +5,23 @@
 <html>
 <head>
 
-	  <!-- Required meta tags -->
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
+    <!-- external css -->
+    <link rel="stylesheet" href="../../static/recognition/img/css/admin_dashboard.css">
 
     <!-- Bootstrap CSS -->
+    <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-   <style>
+   <!-- <style>
     body{
       background: url('{% static "recognition/img/bg_image.png"%}') no-repeat center center fixed;
       background-size: cover;
       
-    }
+    } -->
    
    </style>
 
@@ -32,81 +36,119 @@ $(document).ready(function(){
 	
 </head>
 <body>
-   <div class="col-lg-12" style="background: rgba(0,0,0,0.6);margin-top:3em;margin-bottom:5em;padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);">
-    <div class="col-sm-12">
-       <a href="{% url 'logout' %}"><h5 class="text-right"><i class="fa fa-user-circle" aria-hidden="true"></i> Logout</h5></a>
-      <h1 class="text-center section-title" style="margin-bottom:2em">Welcome,admin.</h1>
+  <nav class="navbar navbar-expand-lg ">
+    <a class="navbar-brand" href="#">
+        <img src="../../static/recognition/img/tup.png" width="80" height="80" alt="">
+      </a>
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span> -->
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="sw">
+            <h2>Technological University of the Philippines</h2>
+            <h5>Cavite Campus</h5>
+        </div>
+
+
+
     </div>
-     <style>
-      h4{
-        margin-bottom: 1.5em;
-        padding-top: 30px;
+    <a href="{% url 'logout' %}" style="text-decoration: none;"><h5 class="text-right" style="color:red;"><i class="fa-solid fa-right-from-bracket" style="color:red;"></i> Logout</h5></a>
+    
+  </nav>
+  <br>
+  <br>
 
-      }
-      img{
-        border-radius:50%;
-        -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-     transition: all 0.3s ease-in-out;
-      }
-      img:hover{
-        -webkit-box-shadow: 2px 2px 21px 0px rgba(0, 3, 0, 0.91);
-        -moz-box-shadow:    2px 2px 21px 0px rgba(0, 3, 0, 0.91);
-        box-shadow:         2px 2px 21px 0px rgba(0, 3, 0, 0.91);
-        border:2px solid #fff;
-      }
-      h3{
-        margin-bottom: 1.3em;
-      }
-      a{
-        color:inherit
-      }
-      a:hover{
-        color:inherit;
-        text-decoration: none;
-      }
-      /*
-      .section-title:after {
-          content:' ';display:block;margin:0 auto;width:100px;margin-top: 6px;border:2px solid #d0d0d0;border-radius:4px;
-          -webkit-border-radius:4px;
-          -moz-border-radius:4px;
-          box-shadow:inset 0 1px 1px rgba(0, 0, 0, .05);
-          -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .05);
-          -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .05);
-          margin-bottom:1em;
-        }
-        */
-        .att{
-          padding-right: 150px;
-        }
-        .lgn{
-          padding-right: 80px;
-        }
-    </style>
+    <div class="col-sm-12" id="welcome">
+      
+      <h1 class="text-center section-title" ><i class="fa-solid fa-user-tie"></i> Welcome Admin</h1>
+     
+    </div>
+    
+<br>
+    <br>
+    <div class="row">
+
+      <a href="{%url 'register' %}" class="card">
+        <div class="inner1">
+          <div class="left">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <div class="right">
+            <h2>Register New Employee</h2>
+
+          </div>
+
+        </div>
+
+      </a>
+
+      <a href="{%url 'add-photos'%}"class="card" id="card2">
+        <div class="inner1">
+          <div class="left">
+            <i class="fa-solid fa-users-viewfinder"></i>
+          </div>
+          <div class="right">
+            <h2>Register Face</h2>
+
+          </div>
+
+        </div>
+
+      </a>
+
+      <a href="{%url 'train' %}" class="card" id="card3">
+        <div class="inner1">
+          <div class="left">
+            <i class="fa-solid fa-right-left"></i>
+          </div>
+          <div class="right">
+            <h2>Train</h2>
+
+          </div>
+
+        </div>
+
+      </a>
+
+      <a href="{%url 'view-attendance-home' %}" class="card" id="card4">
+        <div class="inner1">
+          <div class="left">
+            <i class="fa-solid fa-chart-simple"></i>
+          </div>
+          <div class="right">
+            <h2>Attendance Report</h2>
+
+          </div>
+
+        </div>
+
+      </a>
+
+      
+
+    </div>
 
 
 
 
 
-      <div class="row">
+      <!-- <div class="row">
      
        
 
-           <div class="col-md-3">
+           <div class="col-md-3" id="ew">
           <a href="{%url 'register' %}"><img src="{% static 'recognition/img/register.png' %}" class="img-responsive" style="width:300px;height:300px ;" /></a>
           
         </div>
-          <div class="col-md-3">
+          <div class="col-md-3" id="ew">
           <a href="{%url 'add-photos'%}"><img src="{% static 'recognition/img/addphotos.png' %}" class="img-responsive" style="width:300px;height:300px ;" /></a>
           
         </div>
-           <div class="col-md-3">
+           <div class="col-md-3" id="ew">
           <a href="{%url 'train' %}" id="train" ><img src="{% static 'recognition/img/train.jpeg' %}" class="img-responsive" style="width:300px;height:300px ;" /></a>
           
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" id="ew">
           <a href="{%url 'view-attendance-home' %}"><img src="{% static 'recognition/img/reports.png' %}" class="img-responsive" style="width:300px;height:300px"/></a>
        
         </div>
@@ -115,8 +157,8 @@ box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);">
 
 
 
-      </div>
-  <div class="row">
+      </div> -->
+  <!-- <div class="row1">
 
   
 
@@ -135,7 +177,7 @@ box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7);">
      
 
 
-</div>
+</div> -->
 
  {% if messages %}
       {% for message in messages%}

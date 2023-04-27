@@ -25,7 +25,11 @@
 }
 
 .inl{
-    background-color: brown;
+    background-color: rgb(255, 255, 255);
     width: 100%;
     height: 50vh;
+}
+
+#hov:hover{
+    color: blue;
 }
