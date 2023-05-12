@@ -34,6 +34,8 @@ import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 from matplotlib import rcParams
 import math
+# from datetime import datetime
+
 
 mpl.use('Agg')
 
@@ -41,6 +43,15 @@ mpl.use('Agg')
 
 import serial
 import time
+
+# FOR MATPOTLIBH
+
+import io
+import pdfkit
+from django.http import HttpResponse
+from django.template.loader import get_template
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 ser = serial.Serial("COM3", 9600, timeout=1)
@@ -604,7 +615,7 @@ def add_photos(request):
 
 
 def mark_your_attendance(request):
-	
+	# dt = datetime.now()
 	
 	# audios = "attendance recorded"
 	
@@ -654,6 +665,7 @@ def mark_your_attendance(request):
 
 		for face in faces:
 			print("INFO : inside for loop")
+			# print(dt)
 			(x,y,w,h) = face_utils.rect_to_bb(face)
 
 			face_aligned = fa.align(frame,gray_frame,face)
@@ -674,13 +686,16 @@ def mark_your_attendance(request):
 
 				if count[pred] == 4 and (time.time()-start[pred]) > 1.2:
 					count[pred] = 0
+					break
 				else:
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
 					log_time[pred] = datetime.datetime.now()
+					# log_time[pred] = datetime.now()
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+				
 
 			else:
 				person_name="unknown"
@@ -794,6 +809,7 @@ def mark_your_attendance_out(request):
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+				break
 
 			else:
 				person_name="unknown"
@@ -869,7 +885,7 @@ def train(request):
 				print("removed")
 				os.remove(imagefile)
 
-			
+		
 
 
 	targets=np.array(y)
@@ -965,7 +981,7 @@ def view_attendance_employee(request):
 				
 				time_qs=Time.objects.filter(user=u)
 				present_qs=Present.objects.filter(user=u)
-				date_from=form.cleaned_data.get('date_from')
+				date_from=form.cleaned_data.get('date_from') 
 				date_to=form.cleaned_data.get('date_to')
 				
 				if date_to < date_from:
@@ -1041,3 +1057,61 @@ def view_my_attendance_employee_login(request):
 
 			form=DateForm_2()
 			return render(request,'recognition/view_my_attendance_employee_login.html', {'form' : form, 'qs' :qs})
+	
+
+
+
+
+
+def pdf_view(request):
+    # Generate data for the table
+    data = [
+        ['Header 1', 'Header 2', 'Header 3'],
+        ['Row 1, Col 1', 'Row 1, Col 2', 'Row 1, Col 3'],
+        ['Row 2, Col 1', 'Row 2, Col 2', 'Row 2, Col 3'],
+        ['Row 3, Col 1', 'Row 3, Col 2', 'Row 3, Col 3'],
+    ]
+
+    # Create a figure and axes for the table
+    fig, ax = plt.subplots()
+
+    # Create a table and add it to the axes
+    table = ax.table(cellText=data, colLabels=None, cellLoc='center', loc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(14)
+
+    # Remove borders from the table
+    for key, cell in table.get_celld().items():
+        cell.set_linewidth(0)
+
+    # Render the table as an image and save it to a buffer
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+
+    # Convert the image buffer to a base64-encoded string
+    image_string = buffer.getvalue()
+
+    # Render the PDF template with the image string
+    template = get_template('pdf_template.html')
+    context = {'image_string': image_string}
+    html = template.render(context)
+
+    # Create a PDF from the HTML using pdfkit
+    options = {
+        'page-size': 'A4',
+        'margin-top': '0mm',
+        'margin-right': '0mm',
+        'margin-bottom': '0mm',
+        'margin-left': '0mm',
+    }
+    pdf = pdfkit.from_string(html, False, options=options)
+
+    # Set the response content type to PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="my_pdf.pdf"'
+
+    # Write the PDF to the response
+    response.write(pdf)
+
+    return response

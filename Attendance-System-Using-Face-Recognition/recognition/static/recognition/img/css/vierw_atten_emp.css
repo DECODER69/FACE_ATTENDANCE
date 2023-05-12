@@ -1,0 +1,122 @@
+.w{
+    display: flex;
+padding: 70px;
+    justify-content: space-between;
+
+
+ 
+}
+
+
+.w .wew{
+    display: block;
+    text-align: center;
+}
+
+
+#upper{
+
+    margin-top: 0 !important;
+}
+
+body{
+    background-color: black ;
+}
+
+.collapse{
+   
+    display: block !important;
+    text-align: center !important;
+}
+
+.collapse .sw{
+    width: 100%;
+    height: auto;
+    display: block !important;
+   
+}
+.sw h2{
+    font-size: 35px !important;
+    font-weight: bolder;
+}
+
+.navbar{
+    background-color: rgb(218, 218, 218) !important;
+}
+
+.in{
+    font-weight: bolder;
+    font-size: 30px ;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: rgb(148, 248, 170);
+    width: 30%;
+    height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.container{
+
+   
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+}
+/* .container #container{
+    width: 100%;
+    height: auto;
+    display: flex;
+    background-color: red;
+} */
+#forme{
+    justify-content:left !important;
+    padding: 10px;
+    background-color: rgb(255, 255, 255) !important;
+    margin: auto;
+    display:block;
+    width: 70%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+form{
+    display: block;
+}
+
+#set{
+    width: 100% !important;
+  
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.username{
+    background-color: rgb(255, 255, 255) !important;
+    min-width: 100% !important;
+}
+
+.date_from{
+    min-width: 100% !important;
+    line-height: 100px !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+.date_to{
+    min-width: 100% !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+.table{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width: 80% !important;
+    margin: auto;
+}
+
+.card{
+    font-size: 15px !important;
+    background-color: red;
+    width: 80%;
+    height: auto;
+    margin: auto;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+

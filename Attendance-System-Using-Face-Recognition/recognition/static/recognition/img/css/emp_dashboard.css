@@ -1,0 +1,164 @@
+.w{
+    display: flex;
+padding: 70px;
+    justify-content: space-between;
+
+
+ 
+}
+
+
+.w .wew{
+    display: block;
+    text-align: center;
+}
+
+
+#upper{
+
+    margin-top: 0 !important;
+}
+
+body{
+    background-color: black ;
+}
+
+.collapse{
+   
+    display: block !important;
+    text-align: center !important;
+}
+
+.collapse .sw{
+    width: 100%;
+    height: auto;
+    display: block !important;
+   
+}
+.sw h2{
+    font-size: 35px !important;
+    font-weight: bolder;
+}
+
+.navbar{
+    background-color: rgb(218, 218, 218) !important;
+}
+
+.in{
+    font-weight: bolder;
+    font-size: 30px ;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: rgb(148, 248, 170);
+    width: 30%;
+    height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.out{
+    font-weight: bolder;
+    font-size: 30px ;
+    text-align: center;
+    text-decoration: none !important;
+    background-color: rgb(255, 158, 134);
+    width: 30%;
+    height: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+
+.row{
+    /* background-color: rgb(202, 179, 179); */
+    display: flex;
+   
+    margin: auto;
+    width: 100%;
+    padding: 20px;
+  
+}
+
+.row .col-md-3{
+    margin: auto !important;
+}
+
+
+#ew{
+    margin: auto;
+}
+
+.text-center{
+    font-size: 26px !important;
+}
+
+.row .card{
+background-color: rgb(152, 248, 216);
+    width: 22%;
+    min-height: 15vh;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    text-decoration: none !important;
+    margin: auto;
+}
+#card2{
+    background-color: rgb(72,206,184);
+    
+}
+#my-link{
+    background-color: rgb(206, 72, 139);
+    
+}
+#card4{
+    background-color: rgb(92, 72, 206);
+    
+}
+.card:hover{
+    background-color: rgb(72, 209, 219);
+}
+
+#card4:hover{
+    background-color: rgb(80, 59, 194);
+    
+}
+.inner1{
+    background-color: rgba(247, 188, 87, 0);
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.left{
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+    text-align: center !important;
+}
+.left i{
+    font-size: 30px;
+    vertical-align: middle !important;
+    color: white;
+}
+.right{
+    width: 70%;
+    height: 100%;
+    color: white;
+    padding: 10px;
+  
+}
+
+.right h2{
+    font-size: 20px !important;
+    text-align:center;
+
+}
+
+
+#welcome{
+    width: 100%;
+    
+    display: flex;
+}
+
+#welcome h6{
+    text-align: left;
+    margin-left: 10px;
+}

@@ -43,12 +43,15 @@
 
 
     </div>
-    <a href="{% url 'logout' %}" style="text-decoration: none;"><h5 class="text-right" style="color:red;"><i class="fa-solid fa-right-from-bracket" style="color:red;"></i> Logout</h5></a>
+    <a href="{% url 'dashboard' %}" style="text-decoration: none;"><h5 class="text-right" style="color:rgb(0, 0, 0);"><i class="fa-solid fa-right-from-bracket" style="color:rgb(0, 0, 0);"></i> Dashboard</h5></a>
     
   </nav>
   <br>
   <br>
 
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
 
  <div class="inn">
   <img src="{% static 'recognition/img/training_visualisation.png' %}" class="forme"/>
@@ -65,6 +68,8 @@
 
     {%endif%}
   </div>
+
+
 
 
   <!-- Optional JavaScript -->
