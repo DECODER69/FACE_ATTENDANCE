@@ -666,6 +666,8 @@ def mark_your_attendance(request):
 		for face in faces:
 			print("INFO : inside for loop")
 			# print(dt)
+
+
 			(x,y,w,h) = face_utils.rect_to_bb(face)
 
 			face_aligned = fa.align(frame,gray_frame,face)
@@ -695,6 +697,19 @@ def mark_your_attendance(request):
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+				# for reelay
+				data = bytes.fromhex('FF 01 01')
+				ser.write(data)
+				time.sleep(2)
+
+
+
+				data2 = bytes.fromhex('FF 01 00')
+				ser.write(data2)
+				# time.sleep(10)
+				# eof relay
+
+
 				
 
 			else:

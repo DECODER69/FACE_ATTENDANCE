@@ -65,3 +65,61 @@ body{
     height: 10vh;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+
+
+/* new */
+
+
+.container{
+    margin-top: 30px ;
+    width: 100%;
+    height: 50vh;
+    
+}
+
+
+.inside1{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card{
+    padding: 5px !important;
+    display: block;
+    width: 30%;
+    height: 20vh;
+    justify-content: space-between;
+  
+    background-color: rgb(255, 0, 0);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.card .image{
+    width: 100%;
+
+    height: 40% !important;
+ 
+    margin: auto;
+    display: flex;
+
+}
+
+.card .image img{
+ height: 100%;
+ margin: auto;
+}
+
+.card .text{
+    width: 100%;
+    display: flex;
+
+}
+
+.text h4{
+    margin: auto;
+    text-align: center;
+}

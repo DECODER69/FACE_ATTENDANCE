@@ -36,3 +36,8 @@ class DateForm_2(forms.Form):
 
        
 
+
+# class reg_form(forms.Form):
+# 	username = forms.CharField(max_length=12)
+# 	password = forms.PasswordInput()
+

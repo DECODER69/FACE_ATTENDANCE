@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+# from .forms import reg_form
+
 
 #utility functions
 '''
@@ -53,4 +55,27 @@ def register(request):
 
 
 
+
+
+# def reg(request):
+# 	if request.user.username!='admin':
+# 		return redirect('not-authorised')
+# 	if request.method=='POST':
+# 		form=reg_form(request.POST)
+# 		data = request.POST.copy()
+# 		username=data.get('username')
+# 		if username_present(username):
+# 			create_dataset(username)
+# 			messages.success(request, f'Dataset Created')
+# 			return redirect('add-photos')
+# 		else:
+# 			messages.warning(request, f'No such username found. Please register employee first.')
+# 			return redirect('dashboard')
+
+
+# 	else:
+		
+
+# 			form=reg_form()
+# 			return render(request,'recognition/add_photos.html', {'form' : form})
 
