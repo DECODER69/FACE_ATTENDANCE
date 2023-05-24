@@ -654,7 +654,7 @@ def mark_your_attendance(request):
 		
 		frame = vs.read()
 		
-		frame = imutils.resize(frame ,width = 800)
+		frame = imutils.resize(frame ,width = 1000)
 		
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		
@@ -664,7 +664,7 @@ def mark_your_attendance(request):
 
 
 		for face in faces:
-			print("INFO : inside for loop")
+			# print("INFO : inside for loop")
 			# print(dt)
 
 
@@ -693,7 +693,10 @@ def mark_your_attendance(request):
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
 					log_time[pred] = datetime.datetime.now()
-					# log_time[pred] = datetime.now()
+ 
+#  AUTOMATICALLY SAVES ATTENDANCE TO DATABASE ONCE THE CAMERA DETECTS THE NAME OF THE USER
+					update_attendance_in_db_in(present)
+					print("up to date")
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
@@ -704,9 +707,12 @@ def mark_your_attendance(request):
 
 
 
+
 				data2 = bytes.fromhex('FF 01 00')
 				ser.write(data2)
-				# time.sleep(10)
+				time.sleep(10)
+
+                
 				# eof relay
 
 
@@ -741,7 +747,7 @@ def mark_your_attendance(request):
 	
 
 	cv2.destroyAllWindows()
-	update_attendance_in_db_in(present)
+	# update_attendance_in_db_in(present)
 	return redirect('home')
 
 
