@@ -54,7 +54,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-ser = serial.Serial("COM3", 9600, timeout=1)
+ser = serial.Serial('COM5', 9600)
 
 
 #utility functions:
@@ -109,7 +109,8 @@ def create_dataset(username):
 
 
 		for face in faces:
-			print("inside for loop")
+			print("PROCESSING")
+
 			(x,y,w,h) = face_utils.rect_to_bb(face)
 
 			face_aligned = fa.align(frame,gray_frame,face)
@@ -191,44 +192,44 @@ def vizualize_Data(embedded, targets,):
 
 
 
-def update_attendance_in_db_in(present):
-	today=datetime.date.today()
-	time1=datetime.datetime.now()
-	for person in present:
-		user=User.objects.get(username=person)
-		try:
-			qs=Present.objects.get(user=user,date=today)
-		except:
-			qs= None
+# def update_attendance_in_db_in(present):
+# 	today=datetime.date.today()
+# 	time1=datetime.datetime.now()
+# 	for person in present:
+# 		user=User.objects.get(username=person)
+# 		try:
+# 			qs=Present.objects.get(user=user,date=today)
+# 		except:
+# 			qs= None
 		
-		if qs is None:
-			if present[person]==True:
-						a=Present(user=user,date=today,present=True)
+# 		if qs is None:
+# 			if present[person]==True:
+# 						a=Present(user=user,date=today,present=True)
 
 
-						a.save()
-			else:
-				a=Present(user=user,date=today,present=False)
-				a.save()
-		else:
-			if present[person]==True:
-				qs.present=True
+# 						a.save()
+# 			else:
+# 				a=Present(user=user,date=today,present=False)
+# 				a.save()
+# 		else:
+# 			if present[person]==True:
+# 				qs.present=True
 
-				data = bytes.fromhex('FF 01 01')
-				ser.write(data)
-				time.sleep(2)
+# 				data = bytes.fromhex('FF 01 01')
+# 				ser.write(data)
+# 				time.sleep(2)
 
-				data2 = bytes.fromhex('FF 01 00')
-				ser.write(data2)
-				time.sleep(2)
+# 				data2 = bytes.fromhex('FF 01 00')
+# 				ser.write(data2)
+# 				time.sleep(2)
 				
-				qs.save(update_fields=['present'])
+# 				qs.save(update_fields=['present'])
 				
 
-		if present[person]==True:
-			a=Time(user=user,date=today,time=time1, out=False)
+# 		if present[person]==True:
+# 			a=Time(user=user,date=today,time=time1, out=False)
 			
-			a.save()
+# 			a.save()
 
 
 			
@@ -237,21 +238,21 @@ def update_attendance_in_db_in(present):
 
 
 
-def update_attendance_in_db_out(present):
-	today=datetime.date.today()
-	time1=datetime.datetime.now()
-	for person in present:
-		user=User.objects.get(username=person)
-		if present[person]==True:
-			a=Time(user=user,date=today,time=time1, out=True)
-			data = bytes.fromhex('FF 01 01')
-			ser.write(data)
-			time.sleep(3)
+# def update_attendance_in_db_out(present):
+# 	today=datetime.date.today()
+# 	time1=datetime.datetime.now()
+# 	for person in present:
+# 		user=User.objects.get(username=person)
+# 		if present[person]==True:
+# 			a=Time(user=user,date=today,time=time1, out=True)
+# 			data = bytes.fromhex('FF 01 01')
+# 			ser.write(data)
+# 			time.sleep(3)
 
-			data2 = bytes.fromhex('FF 01 00')
-			ser.write(data2)
-			time.sleep(2)
-			a.save()
+# 			data2 = bytes.fromhex('FF 01 00')
+# 			ser.write(data2)
+# 			time.sleep(2)
+# 			a.save()
 		
 
 
@@ -615,6 +616,7 @@ def add_photos(request):
 
 
 def mark_your_attendance(request):
+    
 	# dt = datetime.now()
 	
 	# audios = "attendance recorded"
@@ -626,7 +628,7 @@ def mark_your_attendance(request):
 
 
 		
-			
+
 	with open(svc_save_path, 'rb') as f:
 		svc = pickle.load(f)
 	fa = FaceAligner(predictor , desiredFaceWidth = 96)
@@ -649,11 +651,10 @@ def mark_your_attendance(request):
 	vs = VideoStream(src=0).start()
 	
 	sampleNum = 0
-	
+	cmd1 = "B1"
+	cmd2= "B0"
 	while(True):
-		
 		frame = vs.read()
-		
 		frame = imutils.resize(frame ,width = 1000)
 		
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -664,7 +665,7 @@ def mark_your_attendance(request):
 
 
 		for face in faces:
-			# print("INFO : inside for loop")
+			print("INFO : inside for loop")
 			# print(dt)
 
 
@@ -682,6 +683,10 @@ def mark_your_attendance(request):
 				
 				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
 				pred=person_name
+				print("present"+ str(present))
+				# ser.write(cmd2.encode('utf-8'))
+				# time.sleep(0.5)
+    
 				if count[pred] == 0:
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
@@ -693,34 +698,55 @@ def mark_your_attendance(request):
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
 					log_time[pred] = datetime.datetime.now()
+					# ser.write(cmd1.encode('utf-8'))
+					# time.sleep(0.5)
  
 #  AUTOMATICALLY SAVES ATTENDANCE TO DATABASE ONCE THE CAMERA DETECTS THE NAME OF THE USER
-					update_attendance_in_db_in(present)
-					print("up to date")
-					count[pred] = count.get(pred,0) + 1
-					print(pred, present[pred], count[pred])
+
+					# ser.write(command.encode('utf-8'))
+					# time.sleep(.5)
+					# ser.write(command2.encode('utf-8'))
+					# time.sleep(.5)
+     
+
+     				# for reelay
+					# data = bytes.fromhex('FF 01 01')
+					# ser.write(data)
+					# time.sleep(.5)
+
+					# data2 = bytes.fromhex('FF 01 00')
+					# ser.write(data2)
+					# time.sleep(1)
+					# print("up to date")
+					# count[pred] = count.get(pred,0) + 1
+					# print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				# for reelay
-				data = bytes.fromhex('FF 01 01')
-				ser.write(data)
-				time.sleep(2)
-
-
-
-
-				data2 = bytes.fromhex('FF 01 00')
-				ser.write(data2)
-				time.sleep(10)
-
-                
-				# eof relay
+				update_attendance_in_db_in(present)
+				# print("updating")
+    # for reelay
+				cmd1 = "B1"
+				cmd2 = "B0"
+				ser.write(cmd2.encode('utf-8'))
+				time.sleep(1)
+				ser.write(cmd1.encode('utf-8'))
+    
+				# ser.write(cmd2.encode('utf-8'))
+				# time.sleep(0.5)
+				# # eof relay
 
 
 				
 
 			else:
-				person_name="unknown"
+				person_name="Unknown"
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+				# command3 = "CO"
+				# command4 = "C1"
+				# ser.write(command3.encode('utf-8'))
+				# time.sleep(2)
+    
+				# ser.write(command4.encode('utf-8'))
+				# time.sleep(2)
 
 			
 			
@@ -835,6 +861,7 @@ def mark_your_attendance_out(request):
 			else:
 				person_name="unknown"
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+    
 
 			
 			
@@ -861,6 +888,80 @@ def mark_your_attendance_out(request):
 	cv2.destroyAllWindows()
 	update_attendance_in_db_out(present)
 	return redirect('home')
+
+
+
+
+# moved in and out functions here
+
+def update_attendance_in_db_in(present):
+    today=datetime.date.today()
+    time1=datetime.datetime.now()
+    
+   
+    # ser.write(cmd1.encode('utf-8'))
+    # time.sleep(0.5)
+    # ser.write(cmd2.encode('utf-8'))
+    # time.sleep(5)
+    # time.sleep(1)
+    for person in present:
+        user=User.objects.get(username=person)
+        try:
+            qs=Present.objects.get(user=user,date=today)
+            
+        except:
+            qs= None
+        if qs is None:
+            if present[person]==True:
+                a=Present(user=user,date=today,present=True)
+                a.save()
+            else:
+                a=Present(user=user,date=today,present=False)
+                a.save()
+        else:
+            if present[person]==True:
+                qs.present=True
+                # data = bytes.fromhex('FF 01 01')
+                # ser.write(data)
+
+                qs.save(update_fields=['present'])
+                print("recorded")
+                # cmd2 = "B1"
+                # ser.write(cmd2.encode('utf-8'))
+                # break
+
+        if present[person]==True:
+            a=Time(user=user,date=today,time=time1, out=False)
+            a.save()
+
+  
+
+
+
+			
+		
+
+
+
+
+def update_attendance_in_db_out(present):
+	today=datetime.date.today()
+	time1=datetime.datetime.now()
+	for person in present:
+		user=User.objects.get(username=person)
+		if present[person]==True:
+			a=Time(user=user,date=today,time=time1, out=True)
+			# data = bytes.fromhex('FF 01 01')
+			# ser.write(data)
+			# time.sleep(3)
+
+			# data2 = bytes.fromhex('FF 01 00')
+			# ser.write(data2)
+			# time.sleep(2)
+			a.save()
+		
+
+
 
 
 
@@ -1136,3 +1237,21 @@ def pdf_view(request):
     response.write(pdf)
 
     return response
+
+
+
+
+# for cmd terminal
+
+
+import subprocess
+
+def execute_cmd(request):
+    # Execute the command
+    result = subprocess.run(['cmd', '/c', 'CommandApp_USBRelay HURTM open 01'], capture_output=True, text=True)
+    
+    # Get the command output
+    output = result.stdout
+    
+    # Return the output to the client
+    return HttpResponse(output)
