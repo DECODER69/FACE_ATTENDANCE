@@ -651,8 +651,8 @@ def mark_your_attendance(request):
 	vs = VideoStream(src=0).start()
 	
 	sampleNum = 0
-	cmd1 = "B1"
-	cmd2= "B0"
+	# cm1 = "D1"
+	# cm0 = "D0"
 	while(True):
 		frame = vs.read()
 		frame = imutils.resize(frame ,width = 1000)
@@ -687,13 +687,13 @@ def mark_your_attendance(request):
 				# ser.write(cmd2.encode('utf-8'))
 				# time.sleep(0.5)
     
-				if count[pred] == 0:
+				if count[pred] == 0.95:
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
 
 				if count[pred] == 4 and (time.time()-start[pred]) > 1.2:
 					count[pred] = 0
-					break
+				
 				else:
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
@@ -721,14 +721,34 @@ def mark_your_attendance(request):
 					# count[pred] = count.get(pred,0) + 1
 					# print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				update_attendance_in_db_in(present)
+				print("prob"+str(prob))
+				if prob >= 0.9:
+					print("morethan")
+					cmd0 = "B0"
+					cmd1 = "B1"
+					ser.write(cmd0.encode("utf-8"))
+					time.sleep(0.5)
+					ser.write(cmd1.encode("utf-8"))
+					time.sleep(0.5)
+					update_attendance_in_db_in(present)
+				else:
+					cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+					person_name="Unknown person"
+					print("lessthan")
+					cm0 = "D0"
+					cm1 = "D1"
+					ser.write(cm0.encode("utf-8"))
+					time.sleep(0.5)
+					ser.write(cm1.encode("utf-8"))
+					time.sleep(0.5)
+					# update_attendance_in_db_in(present)
 				# print("updating")
     # for reelay
-				cmd1 = "B1"
-				cmd2 = "B0"
-				ser.write(cmd2.encode('utf-8'))
-				time.sleep(1)
-				ser.write(cmd1.encode('utf-8'))
+				# cmd1 = "B1"
+				# cmd2 = "B0"
+				# ser.write(cmd2.encode('utf-8'))
+				# time.sleep(1)
+				# ser.write(cmd1.encode('utf-8'))
     
 				# ser.write(cmd2.encode('utf-8'))
 				# time.sleep(0.5)
@@ -738,15 +758,15 @@ def mark_your_attendance(request):
 				
 
 			else:
-				person_name="Unknown"
+				person_name="Unknown person"
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				# command3 = "CO"
-				# command4 = "C1"
-				# ser.write(command3.encode('utf-8'))
-				# time.sleep(2)
+				command3 = "DO"
+				command4 = "D1"
+				ser.write(command3.encode('utf-8'))
+				time.sleep(0.5)
     
-				# ser.write(command4.encode('utf-8'))
-				# time.sleep(2)
+				ser.write(command4.encode('utf-8'))
+				time.sleep(0.5)
 
 			
 			
@@ -898,12 +918,6 @@ def update_attendance_in_db_in(present):
     today=datetime.date.today()
     time1=datetime.datetime.now()
     
-   
-    # ser.write(cmd1.encode('utf-8'))
-    # time.sleep(0.5)
-    # ser.write(cmd2.encode('utf-8'))
-    # time.sleep(5)
-    # time.sleep(1)
     for person in present:
         user=User.objects.get(username=person)
         try:
@@ -921,14 +935,11 @@ def update_attendance_in_db_in(present):
         else:
             if present[person]==True:
                 qs.present=True
-                # data = bytes.fromhex('FF 01 01')
-                # ser.write(data)
+         
 
                 qs.save(update_fields=['present'])
                 print("recorded")
-                # cmd2 = "B1"
-                # ser.write(cmd2.encode('utf-8'))
-                # break
+    
 
         if present[person]==True:
             a=Time(user=user,date=today,time=time1, out=False)

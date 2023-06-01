@@ -37,8 +37,8 @@ import time
 ser = serial.Serial('COM5', 9600)
 
 # data = ('command = "B0"')
-command = "B0"
-cmd2 = "B1"
+command = "F0"
+cmd2 = "F1"
 ser.write(command.encode('utf-8'))
 time.sleep(0.5)
 
