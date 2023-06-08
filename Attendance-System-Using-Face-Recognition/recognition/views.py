@@ -54,7 +54,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-ser = serial.Serial('COM5', 9600)
+ser = serial.Serial('COM3', 9600)
 
 
 #utility functions:
@@ -655,7 +655,8 @@ def mark_your_attendance(request):
 	# cm0 = "D0"
 	while(True):
 		frame = vs.read()
-		frame = imutils.resize(frame ,width = 1000)
+		frame = imutils.resize(frame ,width = 1000, height=500)
+#   frame = cv2.resize(frame ,width = 1000, height=500)
 		
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		
@@ -687,7 +688,7 @@ def mark_your_attendance(request):
 				# ser.write(cmd2.encode('utf-8'))
 				# time.sleep(0.5)
     
-				if count[pred] == 0.95:
+				if count[pred] == 0.95: #0.95
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
 
@@ -721,26 +722,46 @@ def mark_your_attendance(request):
 					# count[pred] = count.get(pred,0) + 1
 					# print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				print("prob"+str(prob))
-				if prob >= 0.9:
-					print("morethan")
-					cmd0 = "B0"
-					cmd1 = "B1"
-					ser.write(cmd0.encode("utf-8"))
-					time.sleep(0.5)
-					ser.write(cmd1.encode("utf-8"))
-					time.sleep(0.5)
+				
+				if prob >= 0.7:
+					# print("morethan")
+					print("Accurate"+str(person_name) ,str(prob))
+					# cmd0 = "B0"
+					# cmd1 = "B1"
+					# ser.write(cmd0.encode("utf-8"))
+					# time.sleep(0.5)
+					# ser.write(cmd1.encode("utf-8"))
+					# time.sleep(0.5)
+					# data2 = bytes.fromhex('FF 01 01')
+					# ser.write(data2)
+					# time.sleep(0.5)
+     
+					# data3 = bytes.fromhex('FF 01 00')
+					# ser.write(data3)
+					# time.sleep(0.5)
+
+
 					update_attendance_in_db_in(present)
 				else:
-					cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-					person_name="Unknown person"
-					print("lessthan")
-					cm0 = "D0"
-					cm1 = "D1"
-					ser.write(cm0.encode("utf-8"))
-					time.sleep(0.5)
-					ser.write(cm1.encode("utf-8"))
-					time.sleep(0.5)
+					
+					print("Failed"+str(person_name), str(prob))
+					# cv2.putText(frame, str(person2), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+					
+					# print("lessthan")
+					# cm0 = "D0"
+					# cm1 = "D1"
+					# ser.write(cm0.encode("utf-8"))
+					# time.sleep(0.5)
+					# ser.write(cm1.encode("utf-8"))
+					# time.sleep(0.5)
+     
+					# data2 = bytes.fromhex('FF 02 01')
+					# ser.write(data2)
+					# time.sleep(0.5)
+
+					# data3 = bytes.fromhex('FF 02 00')
+					# ser.write(data3)
+					# time.sleep(0.5)
 					# update_attendance_in_db_in(present)
 				# print("updating")
     # for reelay
@@ -758,15 +779,15 @@ def mark_your_attendance(request):
 				
 
 			else:
-				person_name="Unknown person"
+				person_name="Unknown person2"
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				command3 = "DO"
-				command4 = "D1"
-				ser.write(command3.encode('utf-8'))
-				time.sleep(0.5)
+				# command3 = "DO"
+				# command4 = "D1"
+				# ser.write(command3.encode('utf-8'))
+				# time.sleep(0.5)
     
-				ser.write(command4.encode('utf-8'))
-				time.sleep(0.5)
+				# ser.write(command4.encode('utf-8'))
+				# time.sleep(0.5)
 
 			
 			
@@ -1266,3 +1287,5 @@ def execute_cmd(request):
     
     # Return the output to the client
     return HttpResponse(output)
+
+

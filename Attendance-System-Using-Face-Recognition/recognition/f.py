@@ -34,19 +34,19 @@ import time
 # # print(result)
 
 
-ser = serial.Serial('COM5', 9600)
+ser = serial.Serial('COM3', 9600)
 
-# data = ('command = "B0"')
-command = "F0"
-cmd2 = "F1"
-ser.write(command.encode('utf-8'))
-time.sleep(0.5)
+# # data = ('command = "B0"')
+# command = "F0"
+# cmd2 = "F1"
+# ser.write(command.encode('utf-8'))
+# time.sleep(0.5)
 
-ser.write(cmd2.encode('utf-8'))
+# ser.write(cmd2.encode('utf-8'))
 
 
-# data2 = bytes.fromhex('FF 01 00')
-# ser.write(data2)
-# time.sleep(2)
+data2 = bytes.fromhex('FF 01 00')
+ser.write(data2)
+time.sleep(2)
 
 # ser.close()
