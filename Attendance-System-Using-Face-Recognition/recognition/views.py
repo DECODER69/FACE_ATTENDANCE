@@ -666,7 +666,7 @@ def mark_your_attendance(request):
 
 
 		for face in faces:
-			print("INFO : inside for loop")
+			print("INFO : Processing face")
 			# print(dt)
 
 
@@ -726,19 +726,20 @@ def mark_your_attendance(request):
 				if prob >= 0.7:
 					# print("morethan")
 					print("Accurate"+str(person_name) ,str(prob))
+					
 					# cmd0 = "B0"
 					# cmd1 = "B1"
 					# ser.write(cmd0.encode("utf-8"))
 					# time.sleep(0.5)
 					# ser.write(cmd1.encode("utf-8"))
 					# time.sleep(0.5)
-					# data2 = bytes.fromhex('FF 01 01')
-					# ser.write(data2)
-					# time.sleep(0.5)
+					data2 = bytes.fromhex('FF 01 01')
+					ser.write(data2)
+					time.sleep(0.5)
      
-					# data3 = bytes.fromhex('FF 01 00')
-					# ser.write(data3)
-					# time.sleep(0.5)
+					data3 = bytes.fromhex('FF 01 00')
+					ser.write(data3)
+					time.sleep(0.5)
 
 
 					update_attendance_in_db_in(present)
@@ -755,25 +756,27 @@ def mark_your_attendance(request):
 					# ser.write(cm1.encode("utf-8"))
 					# time.sleep(0.5)
      
-					# data2 = bytes.fromhex('FF 02 01')
-					# ser.write(data2)
-					# time.sleep(0.5)
+					data2 = bytes.fromhex('FF 02 01')
+					ser.write(data2)
+					time.sleep(0.5)
 
-					# data3 = bytes.fromhex('FF 02 00')
-					# ser.write(data3)
-					# time.sleep(0.5)
+					data3 = bytes.fromhex('FF 02 00')
+					ser.write(data3)
+					time.sleep(0.5)
 					# update_attendance_in_db_in(present)
 				# print("updating")
     # for reelay
 				# cmd1 = "B1"
 				# cmd2 = "B0"
-				# ser.write(cmd2.encode('utf-8'))
+				# ser.write(c
+    # md2.encode('utf-8'))
 				# time.sleep(1)
 				# ser.write(cmd1.encode('utf-8'))
     
 				# ser.write(cmd2.encode('utf-8'))
 				# time.sleep(0.5)
 				# # eof relay
+
 
 
 				
@@ -785,6 +788,13 @@ def mark_your_attendance(request):
 				# command4 = "D1"
 				# ser.write(command3.encode('utf-8'))
 				# time.sleep(0.5)
+				data2 = bytes.fromhex('FF 02 01')
+				ser.write(data2)
+				time.sleep(0.5)
+
+				data3 = bytes.fromhex('FF 02 00')
+				ser.write(data3)
+				time.sleep(0.5)
     
 				# ser.write(command4.encode('utf-8'))
 				# time.sleep(0.5)
