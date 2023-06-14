@@ -111,7 +111,7 @@
 }
 
 .overall {
-    height: 85vh;
+    height: 80vh;
     margin: 0;
 }
 
@@ -126,8 +126,13 @@
 }
 
 footer {
+    width: 100% !important;
     background-color: #f2f2f2;
     padding: 10px;
-    text-align: center;
-    position: relative;
+}
+
+footer .left22 {
+    width: 10% !important;
+    background-color: red !important;
+    height: 100%;
 }

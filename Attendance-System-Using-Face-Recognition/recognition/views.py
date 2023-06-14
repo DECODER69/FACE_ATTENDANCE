@@ -688,7 +688,7 @@ def mark_your_attendance(request):
 				# ser.write(cmd2.encode('utf-8'))
 				# time.sleep(0.5)
     
-				if count[pred] == 0.95: #0.95
+				if count[pred] == 0: #0.95
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
 
@@ -726,6 +726,7 @@ def mark_your_attendance(request):
 				if prob >= 0.7:
 					# print("morethan")
 					print("Accurate"+str(person_name) ,str(prob))
+					relay()
 					
 					# cmd0 = "B0"
 					# cmd1 = "B1"
@@ -733,19 +734,20 @@ def mark_your_attendance(request):
 					# time.sleep(0.5)
 					# ser.write(cmd1.encode("utf-8"))
 					# time.sleep(0.5)
-					data2 = bytes.fromhex('FF 01 01')
-					ser.write(data2)
-					time.sleep(0.5)
+					# data2 = bytes.fromhex('FF 01 01')
+					# ser.write(data2)
+					# time.sleep(0.5)
      
-					data3 = bytes.fromhex('FF 01 00')
-					ser.write(data3)
-					time.sleep(0.5)
+					# data3 = bytes.fromhex('FF 01 00')
+					# ser.write(data3)
+					# time.sleep(0.5)
 
 
 					update_attendance_in_db_in(present)
 				else:
 					
 					print("Failed"+str(person_name), str(prob))
+					relay()
 					# cv2.putText(frame, str(person2), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 					
 					# print("lessthan")
@@ -756,13 +758,13 @@ def mark_your_attendance(request):
 					# ser.write(cm1.encode("utf-8"))
 					# time.sleep(0.5)
      
-					data2 = bytes.fromhex('FF 02 01')
-					ser.write(data2)
-					time.sleep(0.5)
+					# data2 = bytes.fromhex('FF 02 01')
+					# ser.write(data2)
+					# time.sleep(0.5)
 
-					data3 = bytes.fromhex('FF 02 00')
-					ser.write(data3)
-					time.sleep(0.5)
+					# data3 = bytes.fromhex('FF 02 00')
+					# ser.write(data3)
+					# time.sleep(0.5)
 					# update_attendance_in_db_in(present)
 				# print("updating")
     # for reelay
@@ -783,18 +785,19 @@ def mark_your_attendance(request):
 
 			else:
 				person_name="Unknown person2"
+				relay()
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 				# command3 = "DO"
 				# command4 = "D1"
 				# ser.write(command3.encode('utf-8'))
 				# time.sleep(0.5)
-				data2 = bytes.fromhex('FF 02 01')
-				ser.write(data2)
-				time.sleep(0.5)
+				# data2 = bytes.fromhex('FF 01 01')
+				# ser.write(data2)
+				# time.sleep(0.5)
 
-				data3 = bytes.fromhex('FF 02 00')
-				ser.write(data3)
-				time.sleep(0.5)
+				# data3 = bytes.fromhex('FF 01 00')
+				# ser.write(data3)
+				# time.sleep(0.5)
     
 				# ser.write(command4.encode('utf-8'))
 				# time.sleep(0.5)
@@ -976,13 +979,26 @@ def update_attendance_in_db_in(present):
             a=Time(user=user,date=today,time=time1, out=False)
             a.save()
 
+
+    
+
   
 
 
 
 			
 		
+def relay():
+	data2 = bytes.fromhex('FF 01 01')
+	ser.write(data2)
+	time.sleep(0.5)
 
+
+	data3 = bytes.fromhex('FF 01 00')
+	ser.write(data3)
+	time.sleep(0.5)
+
+	
 
 
 
