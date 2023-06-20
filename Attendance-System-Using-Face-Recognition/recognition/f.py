@@ -1,52 +1,25 @@
-import serial
-import time
+import cv2
 
+# Create a VideoCapture object to read from the webcam
+video_capture = cv2.VideoCapture(0)
 
-# ser = serial.Serial("COM3", 9600, timeout=1)
+# Check if the camera is opened successfully
+if not video_capture.isOpened():
+    print("Failed to open camera")
+    exit()
 
-# data = bytes.fromhex('FF 01 01')
-# ser.write(data)
-# time.sleep(2)
+# Get the camera properties and print their current values
+properties = [
+    (cv2.CAP_PROP_EXPOSURE, "Exposure"),
+    (cv2.CAP_PROP_GAIN, "Gain"),
+    (cv2.CAP_PROP_SHARPNESS, "Sharpness"),
+    (cv2.CAP_PROP_BACKLIGHT, "Backlight"),
+    # Add more camera properties if needed
+]
 
-# data2 = bytes.fromhex('FF 01 00')
-# ser.write(data2)
-# time.sleep(2)
+for prop_id, prop_name in properties:
+    prop_value = video_capture.get(prop_id)
+    print(f"{prop_name}: {prop_value}")
 
-# ser.close()
-
-# def send_command_to_ch340(command, port='COM4', baudrate=9600):
-#     try:
-#         # Open the serial port
-#         ser = serial.Serial(port, baudrate)
-        
-#         # Write the command to the serial port
-#         ser.write(command.encode('utf-8'))
-        
-#         # Close the serial port
-#         ser.close()
-        
-#         return "Command sent successfully."
-#     except serial.SerialException as e:
-#         return str(e)
-
-# command = "B0"
-# # result = send_command_to_ch340(command)
-# # print(result)
-
-
-ser = serial.Serial('COM3', 9600)
-
-# # data = ('command = "B0"')
-# command = "F0"
-# cmd2 = "F1"
-# ser.write(command.encode('utf-8'))
-# time.sleep(0.5)
-
-# ser.write(cmd2.encode('utf-8'))
-
-
-data2 = bytes.fromhex('FF 01 00')
-ser.write(data2)
-time.sleep(2)
-
-# ser.close()
+# Release the VideoCapture
+video_capture.release()

@@ -26,6 +26,8 @@ from sklearn.manifold import TSNE
 import datetime
 from django_pandas.io import read_frame
 from users.models import Present, Time
+
+from .models import accuracy
 import seaborn as sns
 import pandas as pd
 from django.db.models import Count
@@ -35,7 +37,7 @@ import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 from matplotlib import rcParams
 import math
-
+from imutils.video import VideoStream
 # from datetime import datetime
 
 
@@ -529,8 +531,12 @@ def home(request):
 @login_required
 def dashboard(request):
     if request.user.username == "admin":
+        accu = accuracy.objects.all()
         print("admin")
-        return render(request, "recognition/admin_dashboard.html")
+        context = {
+            'accu':[accu.last()]
+        }
+        return render(request, "recognition/admin_dashboard.html", context)
     else:
         print("not admin")
 
@@ -558,15 +564,40 @@ def add_photos(request):
     else:
         form = usernameForm()
         return render(request, "recognition/add_photos.html", {"form": form})
+    
+    
+    
+def relay():
+    data2 = bytes.fromhex("FF 01 01")
+    ser.write(data2)
+    time.sleep(1)
 
+    data3 = bytes.fromhex("FF 01 00")
+    ser.write(data3)
+    time.sleep(1)
+    
 
+from collections import defaultdict
+import threading
+import numpy as np
 def mark_your_attendance(request):
-    # dt = datetime.now()
+    
+    acc = accuracy.objects.latest('create').number
+    
+    array = np.array([acc])
+    print("gfagao", array)
+    
+    
 
-    # audios = "attendance recorded"
 
-    cooldown_time = 5
-    last_face_time = time.time() - cooldown_time
+
+    def run_relay():
+        relay()
+   
+        
+    def update_in():
+        update_attendance_in_db_in(present)
+
 
     detector = dlib.get_frontal_face_detector()
 
@@ -583,53 +614,53 @@ def mark_your_attendance(request):
 
     faces_encodings = np.zeros((1, 128))
     no_of_faces = len(svc.predict_proba(faces_encodings)[0])
-    count = dict()
-    present = dict()
-    log_time = dict()
-    start = dict()
+    count = {}
+    present = {}
+    log_time = {}
+    start = {}
+
     for i in range(no_of_faces):
+        person_name = encoder.inverse_transform([i])[0]
+        count[person_name] = 0
         
-        count[encoder.inverse_transform([i])[0]] = 0
-        present[encoder.inverse_transform([i])[0]] = False
+        present[person_name] = False
 
     vs = VideoStream(src=0).start()
+   
 
-    sampleNum = 0
-    # cm1 = "D1"
-    # cm0 = "D0"
-    
 
+        
+        
     while True:
         
   
         frame = vs.read()
-        frame = imutils.resize(frame, width=1000, height=500)
+        frame = imutils.resize(frame, width=640, height=480)
     
 
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         faces = detector(gray_frame, 0)
+        
 
         for face in faces:
             
            
-            print("INFO : Processing face")
-            
-
             (x, y, w, h) = face_utils.rect_to_bb(face)
 
             face_aligned = fa.align(frame, gray_frame, face)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
 
             (pred, prob) = predict(face_aligned, svc)
-            print("INFO : "+str(prob))
+
 
             if pred != [-1]:
                 person_name = encoder.inverse_transform(np.ravel([pred]))[0]
                 
-                # alisin muna
+        
                 pred = person_name
-                print("present" + str(present))
+                
+           
             
                 if count[pred] == 0:  # 0.95
                     start[pred] = time.time()
@@ -644,44 +675,36 @@ def mark_your_attendance(request):
                     log_time[pred] = datetime.datetime.now()
                     count[pred] = count.get(pred,0) + 1
 
-                #  AUTOMATICALLY SAVES ATTENDANCE TO DATABASE ONCE THE CAMERA DETECTS THE NAME OF THE USER
 
-
-                # cv2.putText(
-                #     frame,
-                #     str(person_name) + str(prob),
-                #     (x + 6, y + h - 6),
-                #     cv2.FONT_HERSHEY_SIMPLEX,
-                #     0.5,
-                #     (0, 255, 0),
-                #     1,
-                # )
-                if prob >= 0.9:
+                if prob >= float(array):
                     cv2.putText(frame, str(person_name)+ str(prob),
                     (x + 6, y + h - 6),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
                     (0, 255, 0),
                     1,)
-                  
+                    # update_attendance_in_db_in(present)
+                    threading.Thread(target=update_in).start()
+                    # relay()
+                    print(person_name, prob, acc)
+                    threading.Thread(target=run_relay).start()
+                    cv2.destroyAllWindows()
+                    time.sleep(2)
+                    print("saved")
 
-                    print("Accurate" + str(person_name), str(prob))
-                    # cv2.destroyAllWindows()
-                 
-                    update_attendance_in_db_in(present)
-                    relay()
-                    
-                    
-                    
-                    
-                    
-            
 
                 else:
-                    print("Failed" + str(person_name), str(prob))
+                  
+                    person_name = "Identifying Face........"
+                    cv2.putText(frame, str(person_name)+ str(prob),
+                    (x + 6, y + h - 6),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 255, 0),
+                    1,)
                  
             else:
-                person_name = "Unknown person2"
+                person_name = "Not Registered"
                 # relay()
                 cv2.putText(
                     frame,
@@ -693,26 +716,14 @@ def mark_your_attendance(request):
                     1,
                 )
 
-            # cv2.putText()
-            # Before continuing to the next loop, I want to give it a little pause
-            # waitKey of 100 millisecond
-            # cv2.waitKey(50)
-
-        # Showing the image in another window
-        # Creates a window with window name "Face" and with the image img
+        
         cv2.imshow("Mark Attendance - In - Press q to exit", frame)
-        # Before closing it we need to give a wait command, otherwise the open cv wont work
-        # @params with the millisecond of delay 1
-        # cv2.waitKey(1)
-        # To get out of the loop
+        
+
         key = cv2.waitKey(50) & 0xFF
         if key == ord("q"):
             break
 
-    # Stoping the videostream
-    # vs.stop()
-
-    # destroying all the windows
 
     cv2.destroyAllWindows()
     # update_attendance_in_db_in(present)
@@ -855,7 +866,8 @@ def update_attendance_in_db_in(present):
                 qs.present = True
 
                 qs.save(update_fields=["present"])
-                print("recorded")
+               
+              
            
 
         if present[person] == True:
@@ -863,14 +875,7 @@ def update_attendance_in_db_in(present):
             a.save()
 
 
-def relay():
-    data2 = bytes.fromhex("FF 01 01")
-    ser.write(data2)
-    time.sleep(0.5)
 
-    data3 = bytes.fromhex("FF 01 00")
-    ser.write(data3)
-    time.sleep(0.5)
 
 
 def update_attendance_in_db_out(present):
@@ -880,13 +885,6 @@ def update_attendance_in_db_out(present):
         user = User.objects.get(username=person)
         if present[person] == True:
             a = Time(user=user, date=today, time=time1, out=True)
-            # data = bytes.fromhex('FF 01 01')
-            # ser.write(data)
-            # time.sleep(3)
-
-            # data2 = bytes.fromhex('FF 01 00')
-            # ser.write(data2)
-            # time.sleep(2)
             a.save()
 
 
@@ -1165,3 +1163,13 @@ def pdf_view(request):
 
 
 # for cmd terminal
+
+
+def accurcy(request):
+    date = datetime.datetime.now()
+    if request.method == "POST":
+        number = request.POST.get('number')
+        data = accuracy(number=number, create = date)
+        data.save()
+        print("Success")
+        return redirect('/dashboard')

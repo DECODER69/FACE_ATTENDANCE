@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 
 
@@ -16,120 +17,183 @@
     <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-   <!-- <style>
+    <!-- <style>
     body{
       background: url('{% static "recognition/img/bg_image.png"%}') no-repeat center center fixed;
       background-size: cover;
       
     } -->
-   
-   </style>
 
-<script  type='text/javascript'
-src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'>
-$(document).ready(function(){
-  $("#train").click(function(){
-    alert("Training begun. This may take upto 5 minutes. Please wait.");
-  });
-});
-</script>
-	
+    </style>
+
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'>
+        $(document).ready(function() {
+            $("#train").click(function() {
+                alert("Training begun. This may take upto 5 minutes. Please wait.");
+            });
+        });
+    </script>
+
 </head>
+
 <body>
-  <!-- <div id="loading-overlay">
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-camera"></i> Set Camera Predictor Accuracy </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+                </div>
+                <div class="note" style="padding: 15px;">
+                    <h5 style="font-size: 15px; color:rgb(0, 0, 0);"><i class="fa-solid fa-circle-info"></i> Information</h5>
+                    <p style="font-size: 12px;">This camera accuracy adjustment applies when the registered number of users increase.<br>When the number of regsitered users increase it is adviced to change the camera predictor accuracy to lower number.</p>
+                    <hr> {% for s in accu %}
+                    <h5 style="font-size: 15px;">Current Accuracy: {{s.number}}</h5>
+                    {% endfor %}
+                </div>
+                <form action="{% url 'accurcy' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <select name="number" id="" class="form-control">
+                        <option value="" selected disabled>Select Accuracy Value</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                    </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="loading-overlay">
     <div class="spinner"></div>
   </div> -->
-  <nav class="navbar navbar-expand-lg ">
-    <a class="navbar-brand" href="#">
-        <img src="../../static/recognition/img/tup.png" width="80" height="80" alt="">
-      </a>
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg ">
+        <a class="navbar-brand" href="#">
+            <img src="../../static/recognition/img/tup.png" width="80" height="80" alt="">
+        </a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span> -->
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="sw">
-            <h2>Technological University of the Philippines</h2>
-            <h5>Cavite Campus</h5>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="sw">
+                <h2>Technological University of the Philippines</h2>
+                <h5>Cavite Campus</h5>
+            </div>
+
+
+
         </div>
+        <a href="{% url 'logout' %}" style="text-decoration: none;">
+            <h5 class="text-right" style="color:red;"><i class="fa-solid fa-right-from-bracket" style="color:red;"></i> Logout</h5>
+        </a>
+
+    </nav>
 
 
-
-    </div>
-    <a href="{% url 'logout' %}" style="text-decoration: none;"><h5 class="text-right" style="color:red;"><i class="fa-solid fa-right-from-bracket" style="color:red;"></i> Logout</h5></a>
-    
-  </nav>
-
-
-  <br>
-  <br>
+    <br>
+    <br>
 
     <div class="col-sm-12" id="welcome">
-      
-      <h1 class="text-center section-title" ><i class="fa-solid fa-user-tie"></i> Welcome Admin</h1>
-     
+
+        <h1 class="text-center section-title"><i class="fa-solid fa-user-tie"></i> Welcome Admin</h1>
+
     </div>
-    
-<br>
+
+    <br>
     <br>
     <div class="row">
 
-      <a href="{%url 'register' %}" class="card">
-        <div class="inner1">
-          <div class="left">
-            <i class="fa-solid fa-user-plus"></i>
-          </div>
-          <div class="right">
-            <h2>Register New Employee</h2>
+        <a href="{%url 'register' %}" class="card">
+            <div class="inner1">
+                <div class="left">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="right">
+                    <h2>Register New Employee</h2>
 
-          </div>
+                </div>
 
-        </div>
+            </div>
 
-      </a>
+        </a>
 
-      <a href="{%url 'add-photos'%}"class="card" id="card2">
-        <div class="inner1">
-          <div class="left">
-            <i class="fa-solid fa-users-viewfinder"></i>
-          </div>
-          <div class="right">
-            <h2>Register Face</h2>
+        <a href="{%url 'add-photos'%}" class="card" id="card2">
+            <div class="inner1">
+                <div class="left">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                </div>
+                <div class="right">
+                    <h2>Register Face</h2>
 
-          </div>
+                </div>
 
-        </div>
+            </div>
 
-      </a>
+        </a>
 
-      <a href="{%url 'train' %}" class="card" id="card3">
-        <div class="inner1">
-          <div class="left">
-            <i class="fa-solid fa-right-left"></i>
-          </div>
-          <div class="right">
-            <h2>Train</h2>
+        <a href="{%url 'train' %}" class="card" id="card3">
+            <div class="inner1">
+                <div class="left">
+                    <i class="fa-solid fa-right-left"></i>
+                </div>
+                <div class="right">
+                    <h2>Train</h2>
 
-          </div>
+                </div>
 
-        </div>
+            </div>
 
-      </a>
+        </a>
 
-      <a href="{%url 'view-attendance-home' %}" class="card" id="card4">
-        <div class="inner1">
-          <div class="left">
-            <i class="fa-solid fa-chart-simple"></i>
-          </div>
-          <div class="right">
-            <h2>Attendance Report</h2>
+        <a href="{%url 'view-attendance-home' %}" class="card" id="card4">
+            <div class="inner1">
+                <div class="left">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+                <div class="right">
+                    <h2>Attendance Report</h2>
 
-          </div>
+                </div>
 
-        </div>
+            </div>
 
-      </a>
+        </a>
 
-      
+
+
+
+
+
+    </div>
+    <br>
+    <br>
+
+    <br>
+    <br>
+    <hr>
+    <h5 style="text-align: center; font-family:Arial, Helvetica, sans-serif;">System Control <i class="fa-solid fa-gear"></i></h5>
+
+    <h6 style="padding: 5px; font-size:13px; text-align:center;"><i class="fa-solid fa-info"></i> Modify system settings here</h6>
+    <div class="row2">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Face Accuracy <i class="fa-solid fa-list-ol"></i>
+      </button>
+
 
     </div>
 
@@ -137,7 +201,7 @@ $(document).ready(function(){
 
 
 
-      <!-- <div class="row">
+    <!-- <div class="row">
      
        
 
@@ -163,7 +227,7 @@ $(document).ready(function(){
 
 
       </div> -->
-  <!-- <div class="row1">
+    <!-- <div class="row1">
 
   
 
@@ -184,23 +248,21 @@ $(document).ready(function(){
 
 </div> -->
 
- {% if messages %}
-      {% for message in messages%}
-      <div class="alert alert-{{message.tags}}" > {{message}}
-      </div>
-      {%endfor %}
-
-    {%endif%}
+    {% if messages %} {% for message in messages%}
+    <div class="alert alert-{{message.tags}}"> {{message}}
+    </div>
+    {%endfor %} {%endif%}
 
 
-</div>
+    </div>
 
 
 
-<!-- Optional JavaScript -->
+    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>

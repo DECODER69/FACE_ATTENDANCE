@@ -1,52 +1,45 @@
-.w{
+.w {
     display: flex;
-padding: 70px;
+    padding: 70px;
     justify-content: space-between;
-
-
- 
 }
 
-
-.w .wew{
+.w .wew {
     display: block;
     text-align: center;
 }
 
-
-#upper{
-
+#upper {
     margin-top: 0 !important;
 }
 
-body{
-    background-color: black ;
+body {
+    background-color: black;
 }
 
-.collapse{
-   
+.collapse {
     display: block !important;
     text-align: center !important;
 }
 
-.collapse .sw{
+.collapse .sw {
     width: 100%;
     height: auto;
     display: block !important;
-   
 }
-.sw h2{
+
+.sw h2 {
     font-size: 35px !important;
     font-weight: bolder;
 }
 
-.navbar{
+.navbar {
     background-color: rgb(218, 218, 218) !important;
 }
 
-.in{
+.in {
     font-weight: bolder;
-    font-size: 30px ;
+    font-size: 30px;
     text-align: center;
     text-decoration: none !important;
     background-color: rgb(148, 248, 170);
@@ -55,9 +48,9 @@ body{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.out{
+.out {
     font-weight: bolder;
-    font-size: 30px ;
+    font-size: 30px;
     text-align: center;
     text-decoration: none !important;
     background-color: rgb(255, 158, 134);
@@ -66,8 +59,7 @@ body{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-
-.row{
+.row {
     /* background-color: rgb(202, 179, 179); */
     display: flex;
     justify-content: space-between;
@@ -76,76 +68,75 @@ body{
     padding: 20px;
 }
 
-.row .col-md-3{
+.row .col-md-3 {
     margin: auto !important;
 }
 
-
-#ew{
+#ew {
     margin: auto;
 }
 
-.text-center{
+.text-center {
     font-size: 26px !important;
 }
 
-.row .card{
-background-color: rgb(247,189,87);
+.row .card {
+    background-color: rgb(247, 189, 87);
     width: 22%;
     min-height: 15vh;
     padding: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     text-decoration: none !important;
 }
-#card2{
-    background-color: rgb(72,206,184);
-    
+
+#card2 {
+    background-color: rgb(72, 206, 184);
 }
-#card3{
+
+#card3 {
     background-color: rgb(206, 72, 139);
-    
 }
-#card4{
+
+#card4 {
     background-color: rgb(92, 72, 206);
-    
 }
-.card:hover{
+
+.card:hover {
     background-color: rgb(185, 162, 58);
 }
 
-#card2:hover{
-    
-}
-.inner1{
+#card2:hover {}
+
+.inner1 {
     background-color: rgba(247, 188, 87, 0);
     width: 100%;
     height: 100%;
     display: flex;
 }
 
-.left{
+.left {
     width: 30%;
     height: 100%;
     padding: 10px;
     text-align: center !important;
 }
-.left i{
+
+.left i {
     font-size: 30px;
     vertical-align: middle !important;
     color: white;
 }
-.right{
+
+.right {
     width: 70%;
     height: 100%;
     color: white;
     padding: 10px;
-  
 }
 
-.right h2{
+.right h2 {
     font-size: 20px !important;
-    text-align:center;
-
+    text-align: center;
 }
 
 
@@ -159,8 +150,9 @@ background-color: rgb(247,189,87);
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: none;
-  }
-  .spinner {
+}
+
+.spinner {
     border: 5px solid #f3f3f3;
     border-top: 5px solid #3498db;
     border-radius: 50%;
@@ -171,4 +163,10 @@ background-color: rgb(247,189,87);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
+
+.row2 {
+    background-color: rgb(255, 255, 255) !important;
+    width: 70%;
+    margin: auto;
+}
