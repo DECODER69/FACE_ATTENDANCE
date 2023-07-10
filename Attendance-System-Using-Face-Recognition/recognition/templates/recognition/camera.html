@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Streaming Video</title>
+    <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/recognition/img/css/camera.css">
+    <link rel="stylesheet" type="text/css" href="../../static/recognition/img/css/cam.css">
+
+
+
+    <script src="https://kit.fontawesome.com/3e1139830b.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg ">
+
+        <a class="navbar-brand" href="#">
+            <img src="../../static/recognition/img/tup.png" width="80" height="80" alt="">
+        </a>
+
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="sw">
+                <h2>Technological University of the Philippines</h2>
+                <h5>Cavite Campus</h5>
+            </div>
+
+
+
+        </div>
+    </nav>
+
+    <div class="col-lg-12" id="upper">
+        <br>
+
+        <div style=" display: flex; width: 100%; ">
+            <!-- <h6 style="font-weight: bolder;"><i class="fa-solid fa-house"></i> HOME</h6> -->
+            <a href='{% url "home" %}' style="text-decoration: none; color: rgb(0, 0, 0);">
+                <h6 id="hov" style="font-weight: bolder;"><i class="fa-solid fa-house"></i> HOME / </h6>
+            </a>
+            <h6 style="font-weight: bolder;"><i class="fa-solid fa-user"></i> ACCOUNT</h6>
+            <!-- <h6><a href='{%url "login" %}'>LOGIN</a></h6> -->
+        </div>
+        <br>
+
+        <br>
+
+    </div>
+
+
+    <div class="overall">
+        <div class="s22">
+
+            <div class="left">
+                <div class="inside_left">
+                    <h2>Face Recognition Camera</h2>
+
+                    <br>
+                    <img src="/video_feed/" id="stream" />
+                </div>
+
+                <form action="{% url 'open_video_stream' %}" style="margin: auto;" id="form">
+                    <button class="btn" type="submit"><i class="fa-solid fa-power-off"></i> Restart Camera</button>
+                </form>
+
+            </div>
+
+
+            <div class="right">
+
+                <div class="inside_right">
+                    <h2>Date and Time</h2>
+                    <br>
+
+
+                    <div id="clockdate">
+                        <div class="clockdate-wrapper">
+                            <div id="clock"></div>
+                            <div id="date"></div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- <script>
+        var source = new EventSource("{% url 'video_feed' %}");
+        var textContentDiv = document.getElementById('text_content');
+
+        source.addEventListener('message', function(event) {
+            textContentDiv.innerHTML = event.data;
+        });
+    </script> -->
+
+
+    <script>
+        var source = new EventSource("{% url 'video_feed' %}");
+        var textContentDiv = document.getElementById('text_content');
+
+        source.addEventListener('message', function(event) {
+            if (event.lastEventId === 'text-event') {
+                textContentDiv.innerHTML = event.data;
+            } else {
+                // Handle image event
+                // ...
+            }
+        });
+    </script>
+
+    <script>
+        var textContent = "{{ text_content }}"; // Access the text_content variable from Django context
+
+        console.log(textContent); // Print the text_content to the JavaScript console
+    </script>
+
+
+
+
+    <script>
+        const img = document.getElementById('stream');
+        img.onerror = function() {
+            console.error('Error loading stream.');
+        };
+    </script>
+
+
+    <script>
+        function startTime() {
+            var today = new Date();
+            var hr = today.getHours();
+            var min = today.getMinutes();
+            var sec = today.getSeconds();
+            ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+            hr = (hr == 0) ? 12 : hr;
+            hr = (hr > 12) ? hr - 12 : hr;
+            //Add a zero in front of numbers<10
+            hr = checkTime(hr);
+            min = checkTime(min);
+            sec = checkTime(sec);
+            document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec + " " + ap;
+
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            var curWeekDay = days[today.getDay()];
+            var curDay = today.getDate();
+            var curMonth = months[today.getMonth()];
+            var curYear = today.getFullYear();
+            var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
+            document.getElementById("date").innerHTML = date;
+
+            var time = setTimeout(function() {
+                startTime()
+            }, 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+        startTime();
+    </script>
+
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js " integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js " integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q " crossorigin="anonymous "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl " crossorigin="anonymous "></script> -->
+</body>
+
+</html>

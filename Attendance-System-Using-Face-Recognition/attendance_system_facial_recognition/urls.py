@@ -39,6 +39,10 @@ urlpatterns = [
          path('view_my_attendance', recog_views.view_my_attendance_employee_login ,name='view-my-attendance-employee-login'),
        path('not_authorised', recog_views.not_authorised, name='not-authorised'),
        path('accurcy/', recog_views.accurcy, name='accurcy'),
+       path('video_feed/', recog_views.video_feed, name='video_feed'),
+       path('open_video_stream/', recog_views.open_video_stream, name='open_video_stream'),
+
+       
    
 
 ]

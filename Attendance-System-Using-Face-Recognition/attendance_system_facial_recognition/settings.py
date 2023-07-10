@@ -25,7 +25,7 @@ SECRET_KEY = '4!of@+5)(cu6!@c&21m644*%n5)h(9h6shzgg5ka%005e=04qu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['172.16.16.108','127.0.0.1', 'localhost']
+# ALLOWED_HOSTS = ['172.16.17.250','127.0.0.1', 'localhost']
 ALLOWED_HOSTS = []
 
 

@@ -1,58 +1,68 @@
-.container{
-   
+.container {
     margin-top: 10px;
 }
-#container{
+
+#container {
     width: 100%;
     height: auto;
 }
-#forme{
-    justify-content:left !important;
+
+#forme {
+    justify-content: left !important;
     padding: 10px;
     background-color: rgb(255, 255, 255) !important;
     margin: auto;
-    display:block;
-    width: 70%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: block;
+    width: 100%;
 }
 
-form{
+form {
     display: block;
 }
 
-#set{
+#set {
     width: 100% !important;
-  
     display: flex !important;
     justify-content: space-between !important;
 }
 
-.username{
+.username {
     background-color: rgb(255, 255, 255) !important;
     min-width: 100% !important;
 }
 
-.date_from{
+.date_from {
     min-width: 100% !important;
     line-height: 100px !important;
     background-color: rgb(255, 255, 255) !important;
 }
 
-.date_to{
+.date_to {
     min-width: 100% !important;
     background-color: rgb(255, 255, 255) !important;
 }
 
-#table12{
+#table12 {
     padding: 10px !important;
+}
+
+.upp {
+    box-shadow: rgba(99, 99, 99, 0.315) 0px 2px 8px 0px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.out_table {
+    box-shadow: rgba(99, 99, 99, 0.315) 0px 2px 8px 0px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.card {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.card{
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-#thead{
+#thead {
     background-color: rgb(126, 126, 126) !important;
     color: white !important;
 }
