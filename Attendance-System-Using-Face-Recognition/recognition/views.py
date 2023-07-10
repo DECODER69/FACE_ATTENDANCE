@@ -571,36 +571,36 @@ def add_photos(request):
     
     
 def relay():
-    # data2 = bytes.fromhex("FF 01 01")
-    # ser.write(data2)
-    # time.sleep(1)
+    data2 = bytes.fromhex("FF 01 01")
+    ser.write(data2)
+    time.sleep(1)
 
-    # data3 = bytes.fromhex("FF 01 00")
-    # ser.write(data3)
-    # time.sleep(1)
+    data3 = bytes.fromhex("FF 01 00")
+    ser.write(data3)
+    time.sleep(1)
     
-    cmd1 = "B0"
-    cmd2 = "B1"
-    ser.write(cmd2.encode('utf-8'))
-    time.sleep(1)
-    ser.write(cmd1.encode('utf-8'))
-    time.sleep(1)
+    # cmd1 = "B0"
+    # cmd2 = "B1"
+    # ser.write(cmd2.encode('utf-8'))
+    # time.sleep(1)
+    # ser.write(cmd1.encode('utf-8'))
+    # time.sleep(1)
     
     
     
 def relay2():
-    # data2 = bytes.fromhex("FF 02 01")
-    # ser.write(data2)
-    # time.sleep(1)
+    data2 = bytes.fromhex("FF 02 01")
+    ser.write(data2)
+    time.sleep(1)
 
-    # data3 = bytes.fromhex("FF 02 00")
-    # ser.write(data3)
-    # time.sleep(1)
+    data3 = bytes.fromhex("FF 02 00")
+    ser.write(data3)
+    time.sleep(1)
     
-    cmd1 = "B0"
-    cmd2 = "B1"
-    ser.write(cmd1.encode('utf-8'))
-    time.sleep(0.5)
+    # cmd1 = "B0"
+    # cmd2 = "B1"
+    # ser.write(cmd1.encode('utf-8'))
+    # time.sleep(0.5)
     
 # def video_feed(request):
 #         # Define the function to retrieve frames from the camera
@@ -940,6 +940,12 @@ def open_video_stream(request):
  
     return render(request, 'recognition/camera.html')    
 
+
+def out_video_stream(request):
+    
+ 
+    return render(request, 'recognition/out.html')    
+
 from collections import defaultdict
 import threading
 import numpy as np
@@ -1104,7 +1110,195 @@ def mark_your_attendance(request):
     return redirect("home")
 
 
-def mark_your_attendance_out(request):
+
+
+def video_feed_2(request):
+    acc = accuracy.objects.latest('create').number
+    
+    array = np.array([acc])
+    print("running", array)
+
+    def run_relay2():
+        relay2()    
+    def update_out():
+        update_attendance_in_db_out(present)
+        
+  # 0 represents the default camera
+    detector = dlib.get_frontal_face_detector()
+
+    predictor = dlib.shape_predictor(
+        "face_recognition_data/shape_predictor_68_face_landmarks.dat"
+    )  # Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
+    svc_save_path = "face_recognition_data/svc.sav"
+
+    with open(svc_save_path, "rb") as f:
+        svc = pickle.load(f)
+    fa = FaceAligner(predictor, desiredFaceWidth=96)
+    encoder = LabelEncoder()
+    encoder.classes_ = np.load("face_recognition_data/classes.npy")
+
+    faces_encodings = np.zeros((1, 128))
+    no_of_faces = len(svc.predict_proba(faces_encodings)[0])
+    count = {}
+    present = {}
+    log_time = {}
+    start = {}
+    person_name_2 = []
+
+
+    
+
+    for i in range(no_of_faces):
+        person_name = encoder.inverse_transform([i])[0]
+ 
+        count[person_name] = 0
+        
+        present[person_name] = False
+    # camera = VideoStream(src=0).start()
+        # 0 represents the default camera
+
+
+ 
+    # Define the function to retrieve frames from the camera
+    def detect_faces(frame):
+
+        while True:
+
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            faces = detector(gray_frame, 0)
+
+            for face in faces:
+          
+                (x, y, w, h) = face_utils.rect_to_bb(face)
+
+                face_aligned = fa.align(frame, gray_frame, face)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
+
+                (pred, prob) = predict(face_aligned, svc)
+                
+
+
+                if pred != [-1]:
+                    person_name = encoder.inverse_transform(np.ravel([pred]))[0]
+                    
+            
+                    pred = person_name
+                    
+            
+                
+                    if count[pred] == 0:  # 0.95
+                        start[pred] = time.time()
+                        count[pred] = count.get(pred, 0) + 1
+
+                    if count[pred] == 4 and (time.time() - start[pred]) > 1.2:
+                        count[pred] = 0
+
+                    else:
+                
+                        present[pred] = True
+                        log_time[pred] = datetime.datetime.now()
+                        count[pred] = count.get(pred,0) + 1
+
+
+                    if prob >= float(array):
+                        cv2.putText(frame, str(person_name)+ str(prob),
+                        (x + 6, y + h - 6),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5,
+                        (0, 255, 0),
+                        1,)
+                        # update_attendance_in_db_in(present)
+                        threading.Thread(target=update_out).start()
+                        # relay()q
+                        # print(person_name, prob, acc)
+                        threading.Thread(target=run_relay2).start()
+                        # cv2.destroyAllWindows()
+                        # time.sleep(2)
+                        print("saved" + str(person_name) + str(prob))
+                        person_name_2.append(person_name)
+                   
+                        
+                       
+                        
+
+
+                    else:
+                    
+                        person_name = "Identifying Face........"
+                        cv2.putText(frame, str(person_name)+ str(prob),
+                        (x + 6, y + h - 6),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5,
+                        (0, 255, 0),
+                        1,)
+                    
+                else:
+                    person_name = "Not Registered"
+                    # print(person_name)
+                    # relay()
+
+                    cv2.putText(
+                        frame,
+                        str(person_name),
+                        (x + 6, y + h - 6),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5,
+                        (0, 255, 0),
+                        1,
+                    )
+
+            return frame
+        
+
+      
+    def get_frame():
+
+    
+        camera = cv2.VideoCapture(0)
+
+        person_names = person_name_2 # Example list of person names
+        print("name nila for html" + str(person_names))
+
+        while True:
+            
+            success, frame = camera.read()
+
+            if not success:
+                break
+            frame_with_faces = detect_faces(frame)
+            _, jpeg = cv2.imencode('.jpg', frame_with_faces)
+            text_content = f"Person: {person_names}"
+            # print("text content" + str(text_content))
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
+                # b'Content-Type: text/plain\r\n\r\n' + text_content.encode('utf-8') + b'\r\n\r\n')
+            
+            # context = {
+            #     'text_content': text_content,
+            # }
+            
+            # return render(request, 'recognition/camera.html', context)
+    
+    
+
+
+    response = StreamingHttpResponse(get_frame(), content_type='multipart/x-mixed-replace; boundary=frame', )
+    
+    
+    # print("pass")
+    
+    
+    return response
+
+    # context = {}
+    # return render(request, 'recognition/camera.html', context)
+
+
+    # Return the streaming response with the video frames
+
+
+def mark_your_attendance_out2(request):
     detector = dlib.get_frontal_face_detector()
 
     predictor = dlib.shape_predictor(
@@ -1247,7 +1441,7 @@ def update_attendance_in_db_in(present):
         if present[person] == True:
             a = Time(user=user, date=today, time=time1, out=False)
             a.save()
-            print("time saved")
+            print("time saved in")
 
 
 
@@ -1257,10 +1451,32 @@ def update_attendance_in_db_out(present):
     today = datetime.date.today()
     time1 = datetime.datetime.now()
     for person in present:
+        
         user = User.objects.get(username=person)
+        try:
+            qs = Present.objects.get(user=user, date=today)
+
+        except:
+            qs = None
+        if qs is None:
+            if present[person] == True:
+                a = Present(user=user, date=today, present=True)
+                a.save()
+                
+            else:
+                a = Present(user=user, date=today, present=False)
+                a.save()
+        else:
+            if present[person] == True:
+                qs.present = True
+
+                qs.save(update_fields=["present"])
+                print("time saved out")
+        
         if present[person] == True:
             a = Time(user=user, date=today, time=time1, out=True)
             a.save()
+            print("time saved out")
 
 
 @login_required

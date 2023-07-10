@@ -48,11 +48,11 @@
         <br>
 
     </div>
-    <h2 style="text-align: center; color:rgb(0, 211, 35);">IN</h2>
+    <h2 style="text-align: center; color:red;">OUT</h2>
     <br>
 
-
     <div class="overall">
+
         <div class="s22">
 
             <div class="left">
@@ -60,10 +60,10 @@
                     <h2>Face Recognition Camera</h2>
 
                     <br>
-                    <img src="/video_feed/" id="stream" />
+                    <img src="/video_feed_2/" id="stream" />
                 </div>
 
-                <form action="{% url 'open_video_stream' %}" style="margin: auto;" id="form">
+                <form action="{% url 'out_video_stream' %}" style="margin: auto;" id="form">
                     <button class="btn" type="submit"><i class="fa-solid fa-power-off"></i> Restart Camera</button>
                 </form>
 
@@ -109,7 +109,7 @@
 
 
     <script>
-        var source = new EventSource("{% url 'video_feed' %}");
+        var source = new EventSource("{% url 'video_feed_2' %}");
         var textContentDiv = document.getElementById('text_content');
 
         source.addEventListener('message', function(event) {

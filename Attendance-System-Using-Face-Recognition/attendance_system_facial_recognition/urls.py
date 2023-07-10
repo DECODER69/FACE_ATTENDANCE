@@ -31,7 +31,7 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(template_name='recognition/home.html'),name='logout'),
      path('register/', users_views.register, name='register'),
      path('mark_your_attendance', recog_views.mark_your_attendance ,name='mark-your-attendance'),
-      path('mark_your_attendance_out', recog_views.mark_your_attendance_out ,name='mark-your-attendance-out'),
+      path('mark_your_attendance_out2', recog_views.mark_your_attendance_out2 ,name='mark-your-attendance-out2'),
       path('view_attendance_home', recog_views.view_attendance_home ,name='view-attendance-home'),
        
         path('view_attendance_date', recog_views.view_attendance_date ,name='view-attendance-date'),
@@ -40,7 +40,10 @@ urlpatterns = [
        path('not_authorised', recog_views.not_authorised, name='not-authorised'),
        path('accurcy/', recog_views.accurcy, name='accurcy'),
        path('video_feed/', recog_views.video_feed, name='video_feed'),
+       path('video_feed_2/', recog_views.video_feed_2, name='video_feed_2'),
        path('open_video_stream/', recog_views.open_video_stream, name='open_video_stream'),
+       path('out_video_stream/', recog_views.out_video_stream, name='out_video_stream'),
+
 
        
    
